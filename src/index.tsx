@@ -61,9 +61,6 @@ a {
 }
 body {
   font-family: 'Poppins', sans-serif;
-  background: #2193b0; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2193b0, #6dd5ed); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2193b0, #6dd5ed)
 }`;
 ReactDOM.render(
   <React.StrictMode>
@@ -76,3 +73,4 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
