@@ -1,16 +1,19 @@
-import { motion } from "framer-motion";
+import { motion, useViewportScroll } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { searchState } from "../atoms";
 
-const NavBar = styled.div`
+const NavBar = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
   display: flex;
   height: 68px;
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  background-color: rgba(13, 13, 13, 1);
 `;
 const Logo = styled.svg`
   position: relative;
@@ -66,19 +69,36 @@ const Form = styled.form`
     &:focus {
       outline: none;
     }
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
   }
 `;
 
 function Nav() {
+  const [scrollY, setScrollY] = useState(0);
+  const { scrollYProgress } = useViewportScroll();
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tvshow");
   const [search, setSearch] = useRecoilState(searchState);
   const searchClick = () => {
     setSearch((prev) => !prev);
   };
+  useEffect(() => {
+    scrollYProgress.onChange(() => {
+      setScrollY(scrollYProgress.get());
+    });
+  }, [scrollYProgress, setScrollY]);
   return (
-    <NavBar>
-      <Wrapper onClick={searchClick}>
+    <NavBar
+      animate={{
+        background:
+          scrollY > 0.01
+            ? "linear-gradient(rgba(13, 13, 13, 1), rgba(13, 13, 13, 1))"
+            : "linear-gradient(rgba(13, 13, 13, 0.6), rgba(13, 13, 13, 0))",
+      }}
+    >
+      <Wrapper>
         <Link to={"/"}>
           <Logo>
             <path
@@ -100,6 +120,7 @@ function Nav() {
         <motion.input
           type="text"
           placeholder="제목, 사람, 장르"
+          initial={{ scaleX: 0 }}
           animate={{ scaleX: search ? 1 : 0 }}
           transition={{ type: "linear" }}
         />
