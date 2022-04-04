@@ -1,5 +1,8 @@
+import { motion } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { searchState } from "../atoms";
 
 const NavBar = styled.div`
   display: flex;
@@ -7,7 +10,7 @@ const NavBar = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  background-color: black;
+  background-color: rgba(13, 13, 13, 1);
 `;
 const Logo = styled.svg`
   position: relative;
@@ -39,18 +42,43 @@ const Item = styled.li<{ match: boolean }>`
     }
   }
 `;
-const Search = styled.i`
+const Search = styled(motion.i)`
+  z-index: 1;
   color: white;
   cursor: pointer;
   font-size: 18px;
+  padding: 15px 10px;
+`;
+const Form = styled.form`
+  position: relative;
+  display: flex;
+  align-items: center;
+  input {
+    color: white;
+    padding: 5px 10px;
+    padding-left: 40px;
+    font-size: 16px;
+    border: 1px solid white;
+    height: 35px;
+    width: 300px;
+    background-color: transparent;
+    transform-origin: right center;
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 
 function Nav() {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tvshow");
+  const [search, setSearch] = useRecoilState(searchState);
+  const searchClick = () => {
+    setSearch((prev) => !prev);
+  };
   return (
     <NavBar>
-      <Wrapper>
+      <Wrapper onClick={searchClick}>
         <Link to={"/"}>
           <Logo>
             <path
@@ -68,7 +96,20 @@ function Nav() {
           </Item>
         </Links>
       </Wrapper>
-      <Search className="fa-solid fa-magnifying-glass"></Search>
+      <Form>
+        <motion.input
+          type="text"
+          placeholder="제목, 사람, 장르"
+          animate={{ scaleX: search ? 1 : 0 }}
+          transition={{ type: "linear" }}
+        />
+        <Search
+          onClick={searchClick}
+          animate={{ x: search ? -300 : 0 }}
+          transition={{ type: "linear" }}
+          className="fa-solid fa-magnifying-glass"
+        ></Search>
+      </Form>
     </NavBar>
   );
 }

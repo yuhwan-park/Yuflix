@@ -1,4 +1,7 @@
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { searchState } from "../atoms";
+
 import Nav from "../Components/Nav";
 
 const Article = styled.div`
@@ -8,11 +11,15 @@ const Article = styled.div`
 `;
 
 function Home() {
+  const setSearch = useSetRecoilState(searchState);
+  const searchClick = () => {
+    setSearch(false);
+  };
   return (
-    <>
+    <div>
       <Nav />
-      <Article>Home</Article>
-    </>
+      <Article onClick={searchClick}>Home</Article>
+    </div>
   );
 }
 
