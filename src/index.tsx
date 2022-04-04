@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import App from "./App";
@@ -61,14 +62,19 @@ a {
 }
 body {
   font-family: 'Poppins', sans-serif;
+  background-color: rgba(20,20,20,1);
+  color: white;
 }`;
+const client = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <ThemeProvider theme={Theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
+      <QueryClientProvider client={client}>
+        <ThemeProvider theme={Theme}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
+      </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")

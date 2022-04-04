@@ -20,11 +20,11 @@ const Logo = styled.svg`
   height: 30px;
   width: 111px;
   color: rgba(229, 9, 20, 1);
+  margin-right: 25px;
 `;
 const Links = styled.ul`
   display: flex;
   flex-direction: row;
-  margin-left: 60px;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 const Item = styled.li<{ match: boolean }>`
-  margin: 0 10px;
+  margin-left: 18px;
   a {
     color: ${(props) =>
       props.match ? "white" : props.theme.fontColor.lighter};
@@ -60,11 +60,11 @@ const Form = styled.form`
     color: white;
     padding: 5px 10px;
     padding-left: 40px;
-    font-size: 16px;
+    font-size: 14px;
     border: 1px solid white;
     height: 35px;
     width: 300px;
-    background-color: transparent;
+    background-color: RGB(37, 35, 28);
     transform-origin: right center;
     &:focus {
       outline: none;
@@ -94,7 +94,7 @@ function Nav() {
       animate={{
         background:
           scrollY > 0.01
-            ? "linear-gradient(rgba(13, 13, 13, 1), rgba(13, 13, 13, 1))"
+            ? "linear-gradient(rgba(13, 13, 13, 1), rgba(13, 13, 13, 0.8))"
             : "linear-gradient(rgba(13, 13, 13, 0.6), rgba(13, 13, 13, 0))",
       }}
     >
@@ -112,7 +112,7 @@ function Nav() {
             <Link to={"/"}>홈</Link>
           </Item>
           <Item match={Boolean(tvMatch)}>
-            <Link to={"/tvshow"}>TV쇼</Link>
+            <Link to={"/tvshow"}>TV</Link>
           </Item>
         </Links>
       </Wrapper>

@@ -1,23 +1,32 @@
-import { useSetRecoilState } from "recoil";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { searchState } from "../atoms";
+import { getTvshows, IGetTvShows } from "../api";
+import HomeScreen from "../Components/HomeScreen";
 import Nav from "../Components/Nav";
 
-const Article = styled.div`
-  width: 100%;
+const Wrapper = styled.div`
+  position: relative;
   height: 200vh;
-  background-color: darkgray;
 `;
 function TvShow() {
-  const setSearch = useSetRecoilState(searchState);
-  const searchClick = () => {
-    setSearch(false);
-  };
+  const { data, isLoading } = useQuery<IGetTvShows>(
+    ["tvshow", "on_the_air"],
+    () => getTvshows("on_the_air")
+  );
   return (
-    <div>
+    <Wrapper>
       <Nav />
-      <Article onClick={searchClick} />
-    </div>
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <>
+          <HomeScreen
+            title={data?.results[0].name}
+            backdrop_path={data?.results[0].backdrop_path}
+          />
+        </>
+      )}
+    </Wrapper>
   );
 }
 
