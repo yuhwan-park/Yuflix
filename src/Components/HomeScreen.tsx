@@ -6,7 +6,6 @@ const Home = styled.div<{ bgImg: string }>`
   position: absolute;
   top: 0;
   left: -17px;
-  z-index: -1;
   width: 100vw;
   height: 100vh;
   display: flex;
