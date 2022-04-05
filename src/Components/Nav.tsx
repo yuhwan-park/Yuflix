@@ -14,6 +14,7 @@ const NavBar = styled(motion.div)`
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
+  z-index: 99;
 `;
 const Logo = styled.svg`
   position: relative;
