@@ -8,6 +8,8 @@ interface IMovie {
   release_date: string;
   title: string;
   id: number;
+  vote_average: number;
+  genre_ids: number[];
 }
 interface ITvShow {
   id: number;
