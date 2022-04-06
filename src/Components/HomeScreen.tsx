@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { searchState } from "../atoms";
 import { makeImage } from "../utils";
 const Home = styled.div<{ bgImg: string }>`
-  position: absolute;
-  top: 0;
   left: -17px;
   width: 100vw;
   height: 100vh;

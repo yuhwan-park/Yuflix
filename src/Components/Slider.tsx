@@ -2,14 +2,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { IGetMovies } from "../api";
+import { IGetDatelessMovies, IGetMovies } from "../api";
 import { offsetState } from "../atoms";
 import { genres, makeImage } from "../utils";
 
 const Wrapper = styled(motion.div)`
   position: relative;
-  top: 80vh;
   width: 100%;
+  top: -200px;
+  height: 450px;
+  margin-bottom: 50px;
   &:hover {
     i {
       display: block;
@@ -22,6 +24,7 @@ const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
+  padding: 0 60px;
   @media only screen and (max-width: 1200px) {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -61,6 +64,7 @@ const Arrow = styled(motion.div)<{ arrow: "right" | "left" }>`
   }
 `;
 const BoxWrapper = styled(motion.div)`
+  cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
@@ -68,8 +72,14 @@ const BoxWrapper = styled(motion.div)`
     transform-origin: center right;
   }
 `;
+const SliderTitle = styled.h1`
+  padding: 30px 0px;
+  padding-left: 60px;
+  font-size: 40px;
+  font-weight: 700;
+`;
 const MovieInfo = styled(motion.div)`
-  display: none;
+  opacity: 0;
   padding: 10px;
   width: 100%;
   background-color: #181818;
@@ -130,8 +140,8 @@ const movieBoxVariants = {
     scale: 1,
   },
   hover: {
-    boxShadow: "1px 3px 3px rgb(0 0 0 / 30%)",
-    y: -100,
+    boxShadow: "rgb(0 0 0 / 75%) 0px 3px 10px",
+    y: -150,
     scale: 1.5,
     transition: {
       delay: 0.5,
@@ -141,14 +151,19 @@ const movieBoxVariants = {
 };
 const movieInfoVariants = {
   hover: {
-    display: "block",
+    opacity: 1,
     transition: {
       delay: 0.5,
+      duration: 0.1,
       type: "tween",
     },
   },
 };
-function Slider({ results }: IGetMovies) {
+interface ISliderProps {
+  results: IGetMovies["results"] | IGetDatelessMovies["results"];
+  title: string;
+}
+function Slider({ results, title }: ISliderProps) {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -172,6 +187,7 @@ function Slider({ results }: IGetMovies) {
   };
   return (
     <Wrapper>
+      <SliderTitle>{title}</SliderTitle>
       <AnimatePresence
         initial={false}
         onExitComplete={toggleLeaving}

@@ -28,6 +28,12 @@ export interface IGetMovies {
   total_pages: number;
   total_results: number;
 }
+export interface IGetDatelessMovies {
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
 
 export interface IGetTvShows {
   page: number;
@@ -36,9 +42,9 @@ export interface IGetTvShows {
   total_results: number;
 }
 
-export function getMovies(format: string) {
+export function getMovies(format: string, page: number) {
   return fetch(
-    `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=1`
+    `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR`
   ).then((res) => res.json());
 }
 export function getTvshows(format: string) {

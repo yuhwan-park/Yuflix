@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getMovies, IGetMovies } from "../api";
+import { getMovies, IGetDatelessMovies, IGetMovies } from "../api";
 import { offsetState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Nav from "../Components/Nav";
@@ -10,18 +10,30 @@ import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
   position: relative;
-  height: 200vh;
-  overflow-x: hidden;
+  min-height: 1000px;
+  overflow: hidden;
 `;
+const Main = styled.main``;
 
 function Home() {
   const setOffset = useSetRecoilState(offsetState);
-  const { data, isLoading } = useQuery<IGetMovies>(
-    ["movie", "now_playing"],
-    () => getMovies("now_playing")
-  );
-
-  window.onresize = function onResize() {
+  const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
+    useQuery<IGetMovies>(["movie", "now_playing"], () =>
+      getMovies("now_playing", 1)
+    );
+  const { data: popularData, isLoading: popularLoading } =
+    useQuery<IGetDatelessMovies>(["movie", "popular"], () =>
+      getMovies("popular", 2)
+    );
+  const { data: upcomingData, isLoading: upcomingLoading } =
+    useQuery<IGetMovies>(["movie", "upcoming"], () => getMovies("upcoming", 1));
+  const { data: topRatedData, isLoading: topRatedLoading } =
+    useQuery<IGetDatelessMovies>(["movie", "top_rated"], () =>
+      getMovies("top_rated", 1)
+    );
+  const isLoading =
+    nowPlayingIsLoading || popularLoading || upcomingLoading || topRatedLoading;
+  window.onresize = function () {
     if (window.innerWidth > 1200) {
       setOffset(6);
     }
@@ -61,13 +73,25 @@ function Home() {
       {isLoading ? (
         <div>loading...</div>
       ) : (
-        <>
+        <Main>
           <HomeScreen
-            title={data?.results[0].title}
-            backdrop_path={data?.results[0].backdrop_path}
+            title={nowPlayingData?.results[0].title}
+            backdrop_path={nowPlayingData?.results[0].backdrop_path}
           />
-          <Slider {...(data as IGetMovies)} />
-        </>
+          <Slider
+            {...(nowPlayingData as IGetMovies)}
+            title="현재 상영중인 영화"
+          />
+          <Slider
+            {...(popularData as IGetDatelessMovies)}
+            title="인기 있는 영화"
+          />
+          <Slider {...(upcomingData as IGetMovies)} title="개봉 예정 영화" />
+          <Slider
+            {...(topRatedData as IGetDatelessMovies)}
+            title="TOP20 영화"
+          />
+        </Main>
       )}
     </Wrapper>
   );
