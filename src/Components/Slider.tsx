@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { IGetDatelessMovies, IGetMovies } from "../api";
+import { IGetDatelessMovies, IGetMovies, IGetTvShows } from "../api";
 import { offsetState } from "../atoms";
 import { genres, makeImage } from "../utils";
 
@@ -160,7 +160,10 @@ const movieInfoVariants = {
   },
 };
 interface ISliderProps {
-  results: IGetMovies["results"] | IGetDatelessMovies["results"];
+  results:
+    | IGetMovies["results"]
+    | IGetDatelessMovies["results"]
+    | IGetTvShows["results"];
   title: string;
 }
 function Slider({ results, title }: ISliderProps) {
@@ -215,9 +218,13 @@ function Slider({ results, title }: ISliderProps) {
               >
                 <MovieBox bgimg={makeImage(movie.poster_path)}></MovieBox>
                 <MovieInfo variants={movieInfoVariants}>
-                  <Title>{movie.title}</Title>
+                  <Title>{"title" in movie ? movie.title : movie.name}</Title>
                   <InfoWrapper>
-                    <Release>{movie.release_date}</Release>
+                    <Release>
+                      {"release_date" in movie
+                        ? movie.release_date
+                        : movie.first_air_date}
+                    </Release>
                     <Vote>평점 : {movie.vote_average}</Vote>
                   </InfoWrapper>
                   <Genres>

@@ -1,7 +1,7 @@
 const API_KEY = "a33fb0f23a7a2315d40a03571b718261";
 const DEFAULT_URL = "https://api.themoviedb.org/3/";
 
-interface IMovie {
+export interface IMovie {
   backdrop_path: string;
   overview: string;
   poster_path: string;
@@ -11,11 +11,14 @@ interface IMovie {
   vote_average: number;
   genre_ids: number[];
 }
-interface ITvShow {
+export interface ITvShow {
   id: number;
   backdrop_path: string;
   name: string;
   poster_path: string;
+  vote_average: number;
+  genre_ids: number[];
+  first_air_date: string;
 }
 
 export interface IGetMovies {
@@ -47,8 +50,13 @@ export function getMovies(format: string, page: number) {
     `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR`
   ).then((res) => res.json());
 }
-export function getTvshows(format: string) {
+export function getMovieWithGenre(genre: number, page: number) {
   return fetch(
-    `${DEFAULT_URL}tv/${format}?api_key=${API_KEY}&language=ko-KR&page=1`
+    `${DEFAULT_URL}discover/movie?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR&sort_by=popularity.desc&with_genres=${genre}`
+  ).then((res) => res.json());
+}
+export function getTvshows(option: string) {
+  return fetch(
+    `${DEFAULT_URL}discover/tv?api_key=${API_KEY}&language=ko-KR${option}`
   ).then((res) => res.json());
 }

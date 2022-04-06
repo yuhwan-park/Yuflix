@@ -2,7 +2,12 @@ import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getMovies, IGetDatelessMovies, IGetMovies } from "../api";
+import {
+  getMovies,
+  getMovieWithGenre,
+  IGetDatelessMovies,
+  IGetMovies,
+} from "../api";
 import { offsetState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Nav from "../Components/Nav";
@@ -31,8 +36,21 @@ function Home() {
     useQuery<IGetDatelessMovies>(["movie", "top_rated"], () =>
       getMovies("top_rated", 1)
     );
+  const { data: sfData, isLoading: sfLoading } = useQuery<IGetDatelessMovies>(
+    ["movie", "sf"],
+    () => getMovieWithGenre(878, 2)
+  );
+  const { data: animeData, isLoading: animeLoading } =
+    useQuery<IGetDatelessMovies>(["movie", "anime"], () =>
+      getMovieWithGenre(16, 1)
+    );
   const isLoading =
-    nowPlayingIsLoading || popularLoading || upcomingLoading || topRatedLoading;
+    nowPlayingIsLoading ||
+    popularLoading ||
+    upcomingLoading ||
+    topRatedLoading ||
+    sfLoading ||
+    animeLoading;
   window.onresize = function () {
     if (window.innerWidth > 1200) {
       setOffset(6);
@@ -91,6 +109,8 @@ function Home() {
             {...(topRatedData as IGetDatelessMovies)}
             title="TOP20 영화"
           />
+          <Slider {...(sfData as IGetDatelessMovies)} title="SF 영화" />
+          <Slider {...(animeData as IGetDatelessMovies)} title="애니메이션" />
         </Main>
       )}
     </Wrapper>

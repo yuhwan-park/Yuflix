@@ -3,15 +3,20 @@ import styled from "styled-components";
 import { getTvshows, IGetTvShows } from "../api";
 import HomeScreen from "../Components/HomeScreen";
 import Nav from "../Components/Nav";
+import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
   position: relative;
-  height: 200vh;
+  min-height: 1000px;
+  overflow: hidden;
 `;
 function TvShow() {
   const { data, isLoading } = useQuery<IGetTvShows>(
-    ["tvshow", "on_the_air"],
-    () => getTvshows("on_the_air")
+    ["tvshow", "koreanTv"],
+    () =>
+      getTvshows(
+        "&sort_by=popularity.desc&page=1&include_null_first_air_dates=false&with_original_language=ko"
+      )
   );
   return (
     <Wrapper>
@@ -24,6 +29,7 @@ function TvShow() {
             title={data?.results[0].name}
             backdrop_path={data?.results[0].backdrop_path}
           />
+          <Slider {...(data as IGetTvShows)} title="인기있는 한국 시리즈" />
         </>
       )}
     </Wrapper>
