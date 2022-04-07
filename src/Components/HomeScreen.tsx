@@ -14,8 +14,7 @@ const Home = styled(motion.div)<{ bgimg: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 20, 1)),
-    url(${(props) => props.bgimg});
+  background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
 `;
@@ -35,6 +34,7 @@ const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 20, 1));
 `;
 const Title = styled.div`
   position: absolute;
@@ -105,17 +105,12 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
   }, [scrollY]);
   return (
     <>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      {isLoading ? null : (
         <>
-          <Overlay />
+          <Overlay onClick={searchClick} />
           <AnimatePresence exitBeforeEnter>
             {time ? (
-              <Home
-                onClick={searchClick}
-                bgimg={makeImage(backdrop_path || "")}
-              >
+              <Home bgimg={makeImage(backdrop_path || "")}>
                 <Title draggable>{title}</Title>
                 <IconWrapper
                   onClick={onRefreshClick}
@@ -126,7 +121,7 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
                 </IconWrapper>
               </Home>
             ) : (
-              <PlayContainer onClick={searchClick}>
+              <PlayContainer>
                 <Title draggable>{title}</Title>
                 {mute ? (
                   <IconWrapper

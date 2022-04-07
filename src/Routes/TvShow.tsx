@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getTvshows, IGetTvShows } from "../api";
 import HomeScreen from "../Components/HomeScreen";
-import Nav from "../Components/Nav";
+import Loading from "../Components/Loading";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
@@ -20,9 +20,8 @@ function TvShow() {
   );
   return (
     <Wrapper>
-      <Nav />
       {isLoading ? (
-        <div>loading...</div>
+        <Loading />
       ) : (
         <>
           <HomeScreen

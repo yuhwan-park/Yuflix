@@ -10,7 +10,7 @@ import {
 } from "../api";
 import { offsetState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
-import Nav from "../Components/Nav";
+import Loading from "../Components/Loading";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
@@ -87,9 +87,8 @@ function Home() {
   }, [setOffset]);
   return (
     <Wrapper>
-      <Nav />
       {isLoading ? (
-        <div>loading...</div>
+        <Loading />
       ) : (
         <Main>
           <HomeScreen
