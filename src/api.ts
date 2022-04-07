@@ -20,6 +20,10 @@ export interface ITvShow {
   genre_ids: number[];
   first_air_date: string;
 }
+interface IVideo {
+  type: string;
+  key: string;
+}
 
 export interface IGetMovies {
   dates: {
@@ -44,6 +48,10 @@ export interface IGetTvShows {
   total_pages: number;
   total_results: number;
 }
+export interface IGetVideo {
+  id: number;
+  results: IVideo[];
+}
 
 export function getMovies(format: string, page: number) {
   return fetch(
@@ -58,5 +66,10 @@ export function getMovieWithGenre(genre: number, page: number) {
 export function getTvshows(option: string) {
   return fetch(
     `${DEFAULT_URL}discover/tv?api_key=${API_KEY}&language=ko-KR${option}`
+  ).then((res) => res.json());
+}
+export function getVideo(id: number, format: string) {
+  return fetch(
+    `${DEFAULT_URL}${format}/${id}/videos?api_key=${API_KEY}&language=ko-KR`
   ).then((res) => res.json());
 }

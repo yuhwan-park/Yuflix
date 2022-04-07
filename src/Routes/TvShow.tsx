@@ -28,6 +28,8 @@ function TvShow() {
           <HomeScreen
             title={data?.results[0].name}
             backdrop_path={data?.results[0].backdrop_path}
+            id={data?.results[0].id}
+            format="tv"
           />
           <Slider {...(data as IGetTvShows)} title="인기있는 한국 시리즈" />
         </>

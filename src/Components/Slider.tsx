@@ -9,7 +9,7 @@ import { genres, makeImage } from "../utils";
 const Wrapper = styled(motion.div)`
   position: relative;
   width: 100%;
-  top: -200px;
+  top: -150px;
   height: 450px;
   margin-bottom: 50px;
   &:hover {
@@ -77,6 +77,7 @@ const SliderTitle = styled.h1`
   padding-left: 60px;
   font-size: 40px;
   font-weight: 700;
+  text-shadow: 1px 3px 10px rgb(0 0 0);
 `;
 const MovieInfo = styled(motion.div)`
   opacity: 0;

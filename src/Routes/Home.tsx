@@ -95,6 +95,8 @@ function Home() {
           <HomeScreen
             title={nowPlayingData?.results[0].title}
             backdrop_path={nowPlayingData?.results[0].backdrop_path}
+            id={nowPlayingData?.results[0].id}
+            format={"movie"}
           />
           <Slider
             {...(nowPlayingData as IGetMovies)}
