@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { IGetDatelessMovies, IGetMovies, IGetTvShows } from "../api";
@@ -168,6 +169,7 @@ interface ISliderProps {
   title: string;
 }
 function Slider({ results, title }: ISliderProps) {
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -188,6 +190,9 @@ function Slider({ results, title }: ISliderProps) {
     const totalMovies = results.length - 1;
     const maxIndex = Math.floor(totalMovies / offset) - 1;
     setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+  };
+  const onMovieClick = (movieId: number) => {
+    navigate(`movie/${movieId}`);
   };
   return (
     <Wrapper>
@@ -211,6 +216,7 @@ function Slider({ results, title }: ISliderProps) {
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
               <BoxWrapper
+                onClick={() => onMovieClick(movie.id)}
                 variants={movieBoxVariants}
                 whileHover="hover"
                 initial="init"

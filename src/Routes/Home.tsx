@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useQuery } from "react-query";
+import { useMatch } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
@@ -11,6 +12,7 @@ import {
 import { offsetState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Loading from "../Components/Loading";
+import MovieModal from "../Components/MovieModal";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
@@ -19,7 +21,6 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 const Main = styled.main``;
-
 function Home() {
   const setOffset = useSetRecoilState(offsetState);
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
@@ -44,6 +45,8 @@ function Home() {
     useQuery<IGetDatelessMovies>(["movie", "anime"], () =>
       getMovieWithGenre(16, 1)
     );
+  const movieMatch = useMatch("movie/:movieId");
+  console.log(movieMatch);
   const isLoading =
     nowPlayingIsLoading ||
     popularLoading ||
@@ -90,29 +93,32 @@ function Home() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Main>
-          <HomeScreen
-            title={nowPlayingData?.results[0].title}
-            backdrop_path={nowPlayingData?.results[0].backdrop_path}
-            id={nowPlayingData?.results[0].id}
-            format={"movie"}
-          />
-          <Slider
-            {...(nowPlayingData as IGetMovies)}
-            title="현재 상영중인 영화"
-          />
-          <Slider
-            {...(popularData as IGetDatelessMovies)}
-            title="인기 있는 영화"
-          />
-          <Slider {...(upcomingData as IGetMovies)} title="개봉 예정 영화" />
-          <Slider
-            {...(topRatedData as IGetDatelessMovies)}
-            title="TOP20 영화"
-          />
-          <Slider {...(sfData as IGetDatelessMovies)} title="SF 영화" />
-          <Slider {...(animeData as IGetDatelessMovies)} title="애니메이션" />
-        </Main>
+        <>
+          <Main>
+            <HomeScreen
+              title={nowPlayingData?.results[0].title}
+              backdrop_path={nowPlayingData?.results[0].backdrop_path}
+              id={nowPlayingData?.results[0].id}
+              format={"movie"}
+            />
+            <Slider
+              {...(nowPlayingData as IGetMovies)}
+              title="현재 상영중인 영화"
+            />
+            <Slider
+              {...(popularData as IGetDatelessMovies)}
+              title="인기 있는 영화"
+            />
+            <Slider {...(upcomingData as IGetMovies)} title="개봉 예정 영화" />
+            <Slider
+              {...(topRatedData as IGetDatelessMovies)}
+              title="TOP20 영화"
+            />
+            <Slider {...(sfData as IGetDatelessMovies)} title="SF 영화" />
+            <Slider {...(animeData as IGetDatelessMovies)} title="애니메이션" />
+          </Main>
+          {movieMatch ? <MovieModal /> : null}
+        </>
       )}
     </Wrapper>
   );

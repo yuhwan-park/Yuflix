@@ -9,7 +9,9 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/tvshow" element={<TvShow />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route path="/movie/:movieId" element={<Home />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
