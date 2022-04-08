@@ -234,7 +234,9 @@ function Slider({ results, title }: ISliderProps) {
                       Object.values(genres).forEach((y) => {
                         if (x === y.id) genreArr.push(y.name);
                       });
-                      return <span key={i}>{genreArr}</span>;
+                      return genreArr.length > 0 ? (
+                        <span key={i}>{genreArr}</span>
+                      ) : null; // 맞는 장르가 없을 시 리턴값 없음
                     })}
                   </Genres>
                 </MovieInfo>

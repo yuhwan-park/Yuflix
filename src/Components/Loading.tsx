@@ -70,7 +70,7 @@ function Loading() {
                   gradientUnits="userSpaceOnUse"
                 >
                   <stop offset="0" />
-                  <stop offset="1" stop-opacity="0" />
+                  <stop offset="1" stopOpacity="0" />
                 </radialGradient>
                 <path
                   id="path5719"
