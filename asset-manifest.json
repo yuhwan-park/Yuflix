@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/Yuflix/static/js/main.b4eeb0c4.js",
+    "index.html": "/Yuflix/index.html",
+    "main.b4eeb0c4.js.map": "/Yuflix/static/js/main.b4eeb0c4.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.b4eeb0c4.js"
+  ]
+}
