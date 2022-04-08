@@ -7,8 +7,10 @@ import { useQuery } from "react-query";
 import { getVideo, IGetVideo } from "../api";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+const Container = styled.div`
+  position: relative;
+`;
 const Home = styled(motion.div)<{ bgimg: string }>`
-  left: -17px;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -106,7 +108,7 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
   return (
     <>
       {isLoading ? null : (
-        <>
+        <Container>
           <Overlay onClick={searchClick} />
           <AnimatePresence exitBeforeEnter>
             {time ? (
@@ -153,7 +155,7 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
               </PlayContainer>
             )}
           </AnimatePresence>
-        </>
+        </Container>
       )}
     </>
   );

@@ -9,3 +9,8 @@ export const offsetState = atom({
   key: "offset",
   default: 6,
 });
+
+export const scrollYState = atom({
+  key: "scrollY",
+  default: 0,
+});

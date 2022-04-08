@@ -1,7 +1,8 @@
+import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useMatch } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useMatch, useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   getMovies,
@@ -9,20 +10,47 @@ import {
   IGetDatelessMovies,
   IGetMovies,
 } from "../api";
-import { offsetState } from "../atoms";
+import { offsetState, scrollYState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Loading from "../Components/Loading";
-import MovieModal from "../Components/MovieModal";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
-  position: relative;
   min-height: 1000px;
   overflow: hidden;
 `;
 const Main = styled.main``;
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+const Modal = styled(motion.div)`
+  position: absolute;
+  width: 50vw;
+  height: 90vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: rgba(20, 20, 20, 1);
+  box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
+  div {
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 800px) {
+    width: 100vw;
+  }
+`;
 function Home() {
   const setOffset = useSetRecoilState(offsetState);
+  const navigate = useNavigate(); // URL을 바꾸기 위한 hook
+  const [scroll, setScrollY] = useRecoilState(scrollYState);
+  const { scrollY } = useViewportScroll();
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
     useQuery<IGetMovies>(["movie", "now_playing"], () =>
       getMovies("now_playing", 1)
@@ -45,8 +73,10 @@ function Home() {
     useQuery<IGetDatelessMovies>(["movie", "anime"], () =>
       getMovieWithGenre(16, 1)
     );
+  const onOverlayClick = () => {
+    navigate("/");
+  };
   const movieMatch = useMatch("movie/:movieId");
-  console.log(movieMatch);
   const isLoading =
     nowPlayingIsLoading ||
     popularLoading ||
@@ -88,12 +118,17 @@ function Home() {
       setOffset(2);
     }
   }, [setOffset]);
+  useEffect(() => {
+    scrollY.onChange((x) => {
+      setScrollY(x);
+    });
+  }, [scrollY, setScrollY]);
   return (
-    <Wrapper>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
+    <>
+      <Wrapper>
+        {isLoading ? (
+          <Loading />
+        ) : (
           <Main>
             <HomeScreen
               title={nowPlayingData?.results[0].title}
@@ -117,10 +152,27 @@ function Home() {
             <Slider {...(sfData as IGetDatelessMovies)} title="SF 영화" />
             <Slider {...(animeData as IGetDatelessMovies)} title="애니메이션" />
           </Main>
-          {movieMatch ? <MovieModal /> : null}
-        </>
-      )}
-    </Wrapper>
+        )}
+      </Wrapper>
+      {/* Movie Modal Section */}
+      <AnimatePresence>
+        {movieMatch ? (
+          <>
+            <Overlay
+              onClick={onOverlayClick}
+              exit={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            />
+            <Modal
+              style={{ top: scroll + 70 }}
+              layoutId={movieMatch.params.movieId}
+            >
+              <motion.div></motion.div>
+            </Modal>
+          </>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }
 

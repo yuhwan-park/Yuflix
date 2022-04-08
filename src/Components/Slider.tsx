@@ -216,6 +216,7 @@ function Slider({ results, title }: ISliderProps) {
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
               <BoxWrapper
+                layoutId={movie.id + ""}
                 onClick={() => onMovieClick(movie.id)}
                 variants={movieBoxVariants}
                 whileHover="hover"
