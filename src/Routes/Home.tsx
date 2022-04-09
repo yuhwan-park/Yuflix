@@ -13,6 +13,7 @@ import {
 import { offsetState, scrollYState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Loading from "../Components/Loading";
+import MovieDetail from "../Components/MovieDetail";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
@@ -37,6 +38,7 @@ const Modal = styled(motion.div)`
   margin: 0 auto;
   background-color: rgba(20, 20, 20, 1);
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
+  overflow-y: hidden;
   div {
     overflow-y: scroll;
     width: 100%;
@@ -51,13 +53,14 @@ function Home() {
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
   const [scroll, setScrollY] = useRecoilState(scrollYState);
   const { scrollY } = useViewportScroll();
+  const movieMatch = useMatch("movie/:movieId");
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
     useQuery<IGetMovies>(["movie", "now_playing"], () =>
       getMovies("now_playing", 1)
     );
   const { data: popularData, isLoading: popularLoading } =
     useQuery<IGetDatelessMovies>(["movie", "popular"], () =>
-      getMovies("popular", 2)
+      getMovies("popular", 3)
     );
   const { data: upcomingData, isLoading: upcomingLoading } =
     useQuery<IGetMovies>(["movie", "upcoming"], () => getMovies("upcoming", 1));
@@ -76,7 +79,6 @@ function Home() {
   const onOverlayClick = () => {
     navigate("/");
   };
-  const movieMatch = useMatch("movie/:movieId");
   const isLoading =
     nowPlayingIsLoading ||
     popularLoading ||
@@ -156,7 +158,7 @@ function Home() {
       </Wrapper>
       {/* Movie Modal Section */}
       <AnimatePresence>
-        {movieMatch ? (
+        {movieMatch?.params.movieId ? (
           <>
             <Overlay
               onClick={onOverlayClick}
@@ -167,7 +169,7 @@ function Home() {
               style={{ top: scroll + 70 }}
               layoutId={movieMatch.params.movieId}
             >
-              <motion.div></motion.div>
+              <MovieDetail {...(movieMatch.params as { movieId: string })} />
             </Modal>
           </>
         ) : null}

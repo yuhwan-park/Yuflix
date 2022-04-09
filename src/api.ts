@@ -24,7 +24,10 @@ interface IVideo {
   type: string;
   key: string;
 }
-
+interface IGenre {
+  id: number;
+  name: string;
+}
 export interface IGetMovies {
   dates: {
     maximum: string;
@@ -52,6 +55,17 @@ export interface IGetVideo {
   id: number;
   results: IVideo[];
 }
+export interface IGetMovieDetail {
+  backdrop_path: string;
+  genres: IGenre[];
+  id: number;
+  title: string;
+  overview: string;
+  runtime: number;
+  release_date: string;
+  tagline: string;
+  vote_average: number;
+}
 
 export function getMovies(format: string, page: number) {
   return fetch(
@@ -71,5 +85,10 @@ export function getTvshows(option: string) {
 export function getVideo(id: number, format: string) {
   return fetch(
     `${DEFAULT_URL}${format}/${id}/videos?api_key=${API_KEY}&language=ko-KR`
+  ).then((res) => res.json());
+}
+export function getMovieDetail(id: string) {
+  return fetch(
+    `${DEFAULT_URL}movie/${id}?api_key=${API_KEY}&language=ko-KR`
   ).then((res) => res.json());
 }
