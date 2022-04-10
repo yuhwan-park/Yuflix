@@ -38,11 +38,16 @@ const Modal = styled(motion.div)`
   margin: 0 auto;
   background-color: rgba(20, 20, 20, 1);
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
-  overflow-y: hidden;
-  div {
-    overflow-y: scroll;
-    width: 100%;
-    height: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 6px;
+    background: #908e8e;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 8px;
+    background: #393737;
+    border-radius: 6px;
   }
   @media (max-width: 800px) {
     width: 100vw;
