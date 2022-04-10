@@ -65,6 +65,7 @@ export interface IGetMovieDetail {
   release_date: string;
   tagline: string;
   vote_average: number;
+  poster_path: string;
 }
 
 export function getMovies(format: string, page: number) {

@@ -173,6 +173,8 @@ function Home() {
             <Modal
               style={{ top: scroll + 70 }}
               layoutId={movieMatch.params.movieId}
+              exit={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
             >
               <MovieDetail {...(movieMatch.params as { movieId: string })} />
             </Modal>

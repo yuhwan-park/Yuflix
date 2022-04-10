@@ -74,11 +74,53 @@ const Overlay = styled.div`
 `;
 const Detail = styled.div`
   position: relative;
-  top: -80px;
-  padding: 15px;
+  padding: 30px;
+`;
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Overview = styled.div<{ more: boolean }>`
+  width: 50%;
+  font-size: 18px;
+  div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: ${(props) => (props.more ? 4 : Infinity)};
+    -webkit-box-orient: vertical;
+    line-height: 25px;
+  }
+  span {
+    display: inline-block;
+    padding: 6px 0;
+    font-size: 16px;
+    font-style: italic;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 const Meta = styled.div`
   display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  span {
+    padding: 10px 0;
+    p {
+      display: inline;
+      color: darkgray;
+    }
+  }
+`;
+const DateAndTime = styled.div`
+  font-size: 14px;
+  padding: 20px 0px;
+  span {
+    padding-right: 10px;
+  }
 `;
 const IconVariants = {
   hover: {
@@ -89,6 +131,7 @@ const IconVariants = {
 function MovieDetail({ movieId }: { movieId: string }) {
   const [time, setTime] = useState(true);
   const [mute, setMute] = useState(true);
+  const [more, setMore] = useState(true);
   const onRefreshClick = () => setTime(false);
   const onMuteClick = () => setMute((prev) => !prev);
   const onEnd = () => setTime(true);
@@ -101,6 +144,9 @@ function MovieDetail({ movieId }: { movieId: string }) {
     () => getVideo(+movieId, "movie")
   );
   const isLoading = detailLoading || videoIsLoading;
+  const onOverviewClick = () => {
+    setMore((prev) => !prev);
+  };
   useEffect(() => {
     setTimeout(() => {
       setTime(false);
@@ -113,8 +159,10 @@ function MovieDetail({ movieId }: { movieId: string }) {
       ) : (
         <Container>
           <Overlay />
-          {time ? (
-            <Home bgimg={makeImage(data?.backdrop_path || "")}>
+          {videoData?.results.length === 0 || time ? (
+            <Home
+              bgimg={makeImage(data?.backdrop_path || data?.poster_path || "")}
+            >
               <Title draggable>{data?.title}</Title>
               <IconWrapper
                 onClick={onRefreshClick}
@@ -157,10 +205,34 @@ function MovieDetail({ movieId }: { movieId: string }) {
             </PlayContainer>
           )}
           <Detail>
-            <Meta>
-              <div>{data?.overview}</div>
-              <div>장르 : {data?.genres.map((x) => x.name).join(", ")}</div>
-            </Meta>
+            <DateAndTime>
+              <span>{data?.release_date.slice(0, 4)}</span>
+              <span>
+                {data
+                  ? `${Math.floor(data?.runtime / 60)}시간 ${
+                      data.runtime % 60
+                    }분`
+                  : null}
+              </span>
+            </DateAndTime>
+            <Info>
+              <Overview more={more}>
+                <div>{data?.overview}</div>
+                <span onClick={onOverviewClick}>
+                  {more ? "더 보기" : "접기"}
+                </span>
+              </Overview>
+              <Meta>
+                <span>
+                  <p>장르 : </p>
+                  {data?.genres.map((x) => x.name).join(", ")}
+                </span>
+                <span>
+                  <p>평점 : </p>
+                  {data?.vote_average || "없음"}
+                </span>
+              </Meta>
+            </Info>
           </Detail>
         </Container>
       )}
