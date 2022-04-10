@@ -67,6 +67,17 @@ export interface IGetMovieDetail {
   vote_average: number;
   poster_path: string;
 }
+export interface IGetTvDetail {
+  backdrop_path: string;
+  poster_path: string;
+  first_air_date: string;
+  genres: IGenre[];
+  id: number;
+  name: string;
+  number_of_seasons: number;
+  overview: string;
+  vote_average: number;
+}
 
 export function getMovies(format: string, page: number) {
   return fetch(
@@ -92,4 +103,9 @@ export function getMovieDetail(id: string) {
   return fetch(
     `${DEFAULT_URL}movie/${id}?api_key=${API_KEY}&language=ko-KR`
   ).then((res) => res.json());
+}
+export function getTvDetail(id: string) {
+  return fetch(`${DEFAULT_URL}tv/${id}?api_key=${API_KEY}&language=ko-KR`).then(
+    (res) => res.json()
+  );
 }

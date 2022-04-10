@@ -104,6 +104,7 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
   const { scrollY } = useViewportScroll();
   const navigate = useNavigate();
   const match = useMatch("/");
+  const tvMatch = useMatch("/tvshow");
   const { data, isLoading } = useQuery<IGetVideo>("video", () =>
     getVideo(id ? id : 0, format)
   );
@@ -114,7 +115,11 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
   const onMuteClick = () => setMute((prev) => !prev);
   const onRefreshClick = () => setTime(false);
   const onDetailBtnClick = () => {
-    navigate(`/movie/${id}`);
+    if (tvMatch) {
+      navigate(`/tvshow/tv/${id}`);
+    } else {
+      navigate(`/movie/${id}`);
+    }
   };
   useEffect(() => {
     // 액세스 후 5초가 지나면 홈스크린을 player로 전환

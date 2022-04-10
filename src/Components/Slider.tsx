@@ -3,7 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { IGetDatelessMovies, IGetMovies, IGetTvShows } from "../api";
+import {
+  IGetDatelessMovies,
+  IGetMovies,
+  IGetTvShows,
+  IMovie,
+  ITvShow,
+} from "../api";
 import { offsetState } from "../atoms";
 import { genres, makeImage } from "../utils";
 
@@ -191,8 +197,12 @@ function Slider({ results, title }: ISliderProps) {
     const maxIndex = Math.floor(totalMovies / offset) - 1;
     setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
   };
-  const onMovieClick = (movieId: number) => {
-    navigate(`movie/${movieId}`);
+  const onMovieClick = (movie: IMovie | ITvShow) => {
+    if ("title" in movie) {
+      navigate(`movie/${movie.id}`);
+    } else if ("name" in movie) {
+      navigate(`/tvshow/tv/${movie.id}`);
+    }
   };
   return (
     <Wrapper>
@@ -217,7 +227,7 @@ function Slider({ results, title }: ISliderProps) {
             .map((movie) => (
               <BoxWrapper
                 layoutId={movie.id + ""}
-                onClick={() => onMovieClick(movie.id)}
+                onClick={() => onMovieClick(movie)}
                 variants={movieBoxVariants}
                 whileHover="hover"
                 initial="init"

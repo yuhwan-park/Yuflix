@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getMovieDetail, getVideo, IGetMovieDetail, IGetVideo } from "../api";
+import { getTvDetail, getVideo, IGetTvDetail, IGetVideo } from "../api";
 import { makeImage, makeVideoUrl } from "../utils";
 import Loading from "./Loading";
 
@@ -128,25 +128,25 @@ const IconVariants = {
   },
 };
 
-function MovieDetail({ movieId }: { movieId: string }) {
+function TvDetailModal({ tvId }: { tvId: string }) {
   const [time, setTime] = useState(true);
   const [mute, setMute] = useState(true);
   const [more, setMore] = useState(true);
   const onRefreshClick = () => setTime(false);
   const onMuteClick = () => setMute((prev) => !prev);
   const onEnd = () => setTime(true);
-  const { data, isLoading: detailLoading } = useQuery<IGetMovieDetail>(
-    ["movie", movieId],
-    () => getMovieDetail(movieId)
-  );
-  const { data: videoData, isLoading: videoIsLoading } = useQuery<IGetVideo>(
-    ["video", movieId],
-    () => getVideo(+movieId, "movie")
-  );
-  const isLoading = detailLoading || videoIsLoading;
   const onOverviewClick = () => {
     setMore((prev) => !prev);
   };
+  const { data, isLoading: detailLoading } = useQuery<IGetTvDetail>(
+    ["tv", tvId],
+    () => getTvDetail(tvId)
+  );
+  const { data: videoData, isLoading: videoIsLoading } = useQuery<IGetVideo>(
+    ["video", tvId],
+    () => getVideo(+tvId, "tv")
+  );
+  const isLoading = detailLoading || videoIsLoading;
   useEffect(() => {
     setTimeout(() => {
       setTime(false);
@@ -163,7 +163,7 @@ function MovieDetail({ movieId }: { movieId: string }) {
             <Home
               bgimg={makeImage(data?.backdrop_path || data?.poster_path || "")}
             >
-              <Title draggable>{data?.title}</Title>
+              <Title draggable>{data?.name}</Title>
               <IconWrapper
                 onClick={onRefreshClick}
                 whileHover="hover"
@@ -174,7 +174,7 @@ function MovieDetail({ movieId }: { movieId: string }) {
             </Home>
           ) : (
             <PlayContainer>
-              <Title draggable>{data?.title}</Title>
+              <Title draggable>{data?.name}</Title>
               {mute ? (
                 <IconWrapper
                   onClick={onMuteClick}
@@ -206,14 +206,8 @@ function MovieDetail({ movieId }: { movieId: string }) {
           )}
           <Detail>
             <DateAndTime>
-              <span>{data?.release_date.slice(0, 4)}</span>
-              <span>
-                {data
-                  ? `${Math.floor(data?.runtime / 60)}시간 ${
-                      data.runtime % 60
-                    }분`
-                  : null}
-              </span>
+              <span>{data?.first_air_date.slice(0, 4)}</span>
+              <span>시즌 {data?.number_of_seasons}개</span>
             </DateAndTime>
             <Info>
               <Overview more={more}>
@@ -240,4 +234,4 @@ function MovieDetail({ movieId }: { movieId: string }) {
   );
 }
 
-export default MovieDetail;
+export default TvDetailModal;

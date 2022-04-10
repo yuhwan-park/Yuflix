@@ -1,8 +1,8 @@
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   getMovies,
@@ -13,7 +13,7 @@ import {
 import { offsetState, scrollYState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Loading from "../Components/Loading";
-import MovieDetail from "../Components/MovieDetail";
+import DetailModal from "../Components/DetailModal";
 import Slider from "../Components/Slider";
 
 const Wrapper = styled.div`
@@ -56,8 +56,7 @@ const Modal = styled(motion.div)`
 function Home() {
   const setOffset = useSetRecoilState(offsetState);
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
-  const [scroll, setScrollY] = useRecoilState(scrollYState);
-  const { scrollY } = useViewportScroll();
+  const scroll = useRecoilValue(scrollYState);
   const movieMatch = useMatch("movie/:movieId");
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
     useQuery<IGetMovies>(["movie", "now_playing"], () =>
@@ -125,11 +124,6 @@ function Home() {
       setOffset(2);
     }
   }, [setOffset]);
-  useEffect(() => {
-    scrollY.onChange((x) => {
-      setScrollY(x);
-    });
-  }, [scrollY, setScrollY]);
   return (
     <>
       <Wrapper>
@@ -176,7 +170,7 @@ function Home() {
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <MovieDetail {...(movieMatch.params as { movieId: string })} />
+              <DetailModal {...(movieMatch.params as { movieId: string })} />
             </Modal>
           </>
         ) : null}
