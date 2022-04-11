@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { scrollYState } from "./atoms";
 import Nav from "./Components/Nav";
 import Home from "./Routes/Home";
+import Search from "./Routes/Search";
 import TvShow from "./Routes/TvShow";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="/movie/:movieId" element={<Home />} />
         </Route>
+        <Route path="/search/:searchValue" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,7 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { searchState } from "../atoms";
@@ -79,11 +80,17 @@ const Form = styled.form`
 function Nav() {
   const [scrollY, setScrollY] = useState(0);
   const { scrollYProgress } = useViewportScroll();
+  const navigate = useNavigate();
+  const { register, handleSubmit, setValue } = useForm();
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tvshow");
   const [search, setSearch] = useRecoilState(searchState);
   const searchClick = () => {
     setSearch((prev) => !prev);
+  };
+  const onSubmit = ({ search }: any) => {
+    navigate(`/search/${search}`);
+    setValue("search", "");
   };
   useEffect(() => {
     scrollYProgress.onChange(() => {
@@ -117,8 +124,9 @@ function Nav() {
           </Item>
         </Links>
       </Wrapper>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <motion.input
+          {...register("search", { required: true, minLength: 2 })}
           type="text"
           placeholder="제목, 사람, 장르"
           initial={{ scaleX: 0 }}

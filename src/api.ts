@@ -20,6 +20,12 @@ export interface ITvShow {
   genre_ids: number[];
   first_air_date: string;
 }
+interface ISearchMovie extends IMovie {
+  media_type: string;
+}
+interface ISearchTvshow extends ITvShow {
+  media_type: string;
+}
 interface IVideo {
   type: string;
   key: string;
@@ -78,7 +84,12 @@ export interface IGetTvDetail {
   overview: string;
   vote_average: number;
 }
-
+export interface IGetSearch {
+  page: number;
+  results: ISearchMovie | ISearchTvshow[];
+  total_pages: number;
+  total_results: number;
+}
 export function getMovies(format: string, page: number) {
   return fetch(
     `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR`
@@ -108,4 +119,9 @@ export function getTvDetail(id: string) {
   return fetch(`${DEFAULT_URL}tv/${id}?api_key=${API_KEY}&language=ko-KR`).then(
     (res) => res.json()
   );
+}
+export function getSearch(value: string) {
+  return fetch(
+    `${DEFAULT_URL}search/multi?api_key=${API_KEY}&language=ko-KR&query=${value}&region=KR`
+  ).then((res) => res.json());
 }
