@@ -22,9 +22,11 @@ export interface ITvShow {
 }
 interface ISearchMovie extends IMovie {
   media_type: string;
+  popularity: number;
 }
 interface ISearchTvshow extends ITvShow {
   media_type: string;
+  popularity: number;
 }
 interface IVideo {
   type: string;
@@ -86,7 +88,7 @@ export interface IGetTvDetail {
 }
 export interface IGetSearch {
   page: number;
-  results: ISearchMovie | ISearchTvshow[];
+  results: ISearchMovie[] | ISearchTvshow[];
   total_pages: number;
   total_results: number;
 }
@@ -120,8 +122,10 @@ export function getTvDetail(id: string) {
     (res) => res.json()
   );
 }
-export function getSearch(value: string) {
+export function getSearch(value: string, page?: number) {
   return fetch(
-    `${DEFAULT_URL}search/multi?api_key=${API_KEY}&language=ko-KR&query=${value}&region=KR`
+    `${DEFAULT_URL}search/multi?api_key=${API_KEY}&language=ko-KR&query=${value}&page=${
+      page ? page : 1
+    }&region=KR`
   ).then((res) => res.json());
 }
