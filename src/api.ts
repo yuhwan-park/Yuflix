@@ -20,11 +20,11 @@ export interface ITvShow {
   genre_ids: number[];
   first_air_date: string;
 }
-interface ISearchMovie extends IMovie {
+export interface ISearchMovie extends IMovie {
   media_type: string;
   popularity: number;
 }
-interface ISearchTvshow extends ITvShow {
+export interface ISearchTvshow extends ITvShow {
   media_type: string;
   popularity: number;
 }

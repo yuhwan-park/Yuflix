@@ -246,14 +246,12 @@ function Slider({ results, title }: ISliderProps) {
                     <Vote>평점 : {movie.vote_average}</Vote>
                   </InfoWrapper>
                   <Genres>
-                    {movie.genre_ids.map((x, i) => {
-                      const genreArr: string[] = [];
-                      Object.values(genres).forEach((y) => {
-                        if (x === y.id) genreArr.push(y.name);
-                      });
-                      return genreArr.length > 0 ? (
-                        <span key={i}>{genreArr}</span>
-                      ) : null; // 맞는 장르가 없을 시 리턴값 없음
+                    {movie.genre_ids.map((id, i) => {
+                      return Object.values(genres).map((genreList) =>
+                        id === genreList.id ? (
+                          <span key={i}>{genreList.name}</span>
+                        ) : null
+                      );
                     })}
                   </Genres>
                 </MovieInfo>

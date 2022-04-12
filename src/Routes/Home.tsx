@@ -1,8 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
   getMovies,
@@ -10,7 +9,7 @@ import {
   IGetDatelessMovies,
   IGetMovies,
 } from "../api";
-import { offsetState, scrollYState } from "../atoms";
+import { scrollYState } from "../atoms";
 import HomeScreen from "../Components/HomeScreen";
 import Loading from "../Components/Loading";
 import DetailModal from "../Components/DetailModal";
@@ -20,7 +19,6 @@ const Wrapper = styled.div`
   min-height: 1000px;
   overflow: hidden;
 `;
-const Main = styled.main``;
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -54,7 +52,6 @@ const Modal = styled(motion.div)`
   }
 `;
 function Home() {
-  const setOffset = useSetRecoilState(offsetState);
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
   const scroll = useRecoilValue(scrollYState);
   const movieMatch = useMatch("movie/:movieId");
@@ -90,47 +87,13 @@ function Home() {
     topRatedLoading ||
     sfLoading ||
     animeLoading;
-  window.onresize = function () {
-    if (window.innerWidth > 1200) {
-      setOffset(6);
-    }
-    if (window.innerWidth <= 1200) {
-      setOffset(5);
-    }
-    if (window.innerWidth <= 1000) {
-      setOffset(4);
-    }
-    if (window.innerWidth <= 800) {
-      setOffset(3);
-    }
-    if (window.innerWidth <= 600) {
-      setOffset(2);
-    }
-  };
-  useEffect(() => {
-    if (window.innerWidth > 1200) {
-      setOffset(6);
-    }
-    if (window.innerWidth <= 1200) {
-      setOffset(5);
-    }
-    if (window.innerWidth <= 1000) {
-      setOffset(4);
-    }
-    if (window.innerWidth <= 800) {
-      setOffset(3);
-    }
-    if (window.innerWidth <= 600) {
-      setOffset(2);
-    }
-  }, [setOffset]);
   return (
     <>
       <Wrapper>
         {isLoading ? (
-          <Loading />
+          <Loading width="100vw" height="100vh" />
         ) : (
-          <Main>
+          <main>
             <HomeScreen
               title={nowPlayingData?.results[0].title}
               backdrop_path={nowPlayingData?.results[0].backdrop_path}
@@ -152,7 +115,7 @@ function Home() {
             />
             <Slider {...(sfData as IGetDatelessMovies)} title="SF 영화" />
             <Slider {...(animeData as IGetDatelessMovies)} title="애니메이션" />
-          </Main>
+          </main>
         )}
       </Wrapper>
       {/* Movie Modal Section */}

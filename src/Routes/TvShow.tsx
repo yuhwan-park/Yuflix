@@ -11,7 +11,6 @@ import Slider from "../Components/Slider";
 import TvDetailModal from "../Components/TvDetailModal";
 
 const Wrapper = styled.div`
-  position: relative;
   min-height: 1000px;
   overflow: hidden;
 `;
@@ -91,9 +90,9 @@ function TvShow() {
     <>
       <Wrapper>
         {isLoading ? (
-          <Loading />
+          <Loading width="100vw" height="100vh" />
         ) : (
-          <>
+          <main>
             <HomeScreen
               title={popularData?.results[0].name}
               backdrop_path={popularData?.results[0].backdrop_path}
@@ -111,7 +110,7 @@ function TvShow() {
               title="범죄에 관련된 시리즈"
             />
             <Slider {...(comedyData as IGetTvShows)} title="코미디 시리즈" />
-          </>
+          </main>
         )}
       </Wrapper>
       {/* TVshow Modal Section */}

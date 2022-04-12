@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const LoadingContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
+const LoadingContainer = styled.div<{ width: string; height: string }>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,9 +24,9 @@ const Svg = styled.svg`
 const SvgWrapper = styled(motion.div)`
   opacity: 0;
 `;
-function Loading() {
+function Loading({ width, height }: { width: string; height: string }) {
   return (
-    <LoadingContainer>
+    <LoadingContainer width={width} height={height}>
       <SvgWrapper
         animate={{ opacity: 1 }}
         transition={{ repeat: Infinity, duration: 0.6, repeatType: "mirror" }}
