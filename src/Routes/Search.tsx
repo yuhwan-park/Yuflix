@@ -15,18 +15,11 @@ const Wrapper = styled(motion.div)`
   position: relative;
   width: 100%;
   top: 140px;
-  margin-bottom: 50px;
-  &:hover {
-    i {
-      display: block;
-    }
-  }
 `;
 const Row = styled(motion.div)`
   display: grid;
   gap: 30px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
   width: 100%;
   padding: 0 60px;
   @media only screen and (max-width: 1200px) {
@@ -60,6 +53,12 @@ const MovieInfo = styled(motion.div)`
 const Title = styled.div`
   text-align: center;
   padding-bottom: 10px;
+`;
+const SearchTitle = styled.div`
+  font-size: 48px;
+  padding: 0 60px;
+  padding-bottom: 60px;
+  font-weight: bold;
 `;
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -186,6 +185,10 @@ function Search() {
       ) : (
         <>
           <Wrapper>
+            <SearchTitle>
+              '{params.searchValue}' 검색 결과&nbsp;
+              {document.querySelectorAll(".movieBox").length}건
+            </SearchTitle>
             <Row>
               {data?.pages.map((page, i) => (
                 <React.Fragment key={i}>
@@ -199,6 +202,7 @@ function Search() {
                         initial="init"
                         key={movie.id}
                         transition={{ type: "tween" }}
+                        className="movieBox"
                       >
                         <MovieBox
                           bgimg={makeImage(movie.poster_path)}

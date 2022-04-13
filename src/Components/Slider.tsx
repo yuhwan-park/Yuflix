@@ -51,11 +51,10 @@ const MovieBox = styled(motion.div)<{ bgimg: string }>`
   background-position: center center;
   background-size: cover;
 `;
-const Arrow = styled(motion.div)<{ arrow: "right" | "left" }>`
+const Arrow = styled(motion.div)`
   height: 360px;
   width: 70px;
   position: absolute;
-  ${(props) => props.arrow} : 0px;
   display: flex;
   align-items: center;
   background-color: transparent;
@@ -259,7 +258,7 @@ function Slider({ results, title }: ISliderProps) {
             ))}
         </Row>
       </AnimatePresence>
-      <Arrow arrow="left" onClick={decreaseIndex}>
+      <Arrow onClick={decreaseIndex} style={{ left: 0 }}>
         <motion.i
           variants={arrowVariants}
           initial="init"
@@ -267,7 +266,7 @@ function Slider({ results, title }: ISliderProps) {
           className="fa-solid fa-chevron-left"
         ></motion.i>
       </Arrow>
-      <Arrow arrow="right" onClick={increaseIndex}>
+      <Arrow onClick={increaseIndex} style={{ right: -25 }}>
         <motion.i
           variants={arrowVariants}
           initial="init"
