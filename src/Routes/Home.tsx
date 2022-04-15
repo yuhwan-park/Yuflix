@@ -29,7 +29,7 @@ const Overlay = styled(motion.div)`
 `;
 const Modal = styled(motion.div)`
   position: absolute;
-  width: 50vw;
+  width: 60vw;
   height: 90vh;
   left: 0;
   right: 0;
@@ -54,7 +54,7 @@ const Modal = styled(motion.div)`
 function Home() {
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
   const scroll = useRecoilValue(scrollYState);
-  const movieMatch = useMatch("movie/:movieId");
+  const movieMatch = useMatch("movie/:id");
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
     useQuery<IGetMovies>(["movie", "now_playing"], () =>
       getMovies("now_playing", 1)
@@ -120,7 +120,7 @@ function Home() {
       </Wrapper>
       {/* Movie Modal Section */}
       <AnimatePresence>
-        {movieMatch?.params.movieId ? (
+        {movieMatch?.params.id ? (
           <>
             <Overlay
               onClick={onOverlayClick}
@@ -129,11 +129,11 @@ function Home() {
             />
             <Modal
               style={{ top: scroll + 70 }}
-              layoutId={movieMatch.params.movieId}
+              layoutId={movieMatch.params.id}
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <DetailModal {...(movieMatch.params as { movieId: string })} />
+              <DetailModal {...(movieMatch.params as { id: string })} />
             </Modal>
           </>
         ) : null}

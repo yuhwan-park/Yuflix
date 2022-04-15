@@ -97,6 +97,11 @@ export function getMovies(format: string, page: number) {
     `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR`
   ).then((res) => res.json());
 }
+export function getRecommendationMovies(id: string) {
+  return fetch(
+    `${DEFAULT_URL}movie/${id}/recommendations?api_key=${API_KEY}&language=ko-KR&page=1`
+  ).then((res) => res.json());
+}
 export function getMovieWithGenre(genre: number, page: number) {
   return fetch(
     `${DEFAULT_URL}discover/movie?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR&sort_by=popularity.desc&with_genres=${genre}`

@@ -128,7 +128,7 @@ const IconVariants = {
   },
 };
 
-function TvDetailModal({ tvId }: { tvId: string }) {
+function TvDetailModal({ id }: { id: string }) {
   const [time, setTime] = useState(true);
   const [mute, setMute] = useState(true);
   const [more, setMore] = useState(true);
@@ -139,12 +139,12 @@ function TvDetailModal({ tvId }: { tvId: string }) {
     setMore((prev) => !prev);
   };
   const { data, isLoading: detailLoading } = useQuery<IGetTvDetail>(
-    ["tv", tvId],
-    () => getTvDetail(tvId)
+    ["tv", id],
+    () => getTvDetail(id)
   );
   const { data: videoData, isLoading: videoIsLoading } = useQuery<IGetVideo>(
-    ["video", tvId],
-    () => getVideo(+tvId, "tv")
+    ["video", id],
+    () => getVideo(+id, "tv")
   );
   const isLoading = detailLoading || videoIsLoading;
   useEffect(() => {

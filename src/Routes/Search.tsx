@@ -172,7 +172,7 @@ function Search() {
     }
   };
   const onOverlayClick = () => {
-    navigate(-1);
+    navigate(`/search/${params.searchValue}`);
   };
   useEffect(() => {
     // 다음페이지가 있으면 계속 불러오기 (total page까지)
@@ -251,9 +251,9 @@ function Search() {
                   animate={{ opacity: 1 }}
                 >
                   {movieIdMatch ? (
-                    <DetailModal movieId={params.id} />
+                    <DetailModal id={params.id} />
                   ) : (
-                    <TvDetailModal tvId={params.id} />
+                    <TvDetailModal id={params.id} />
                   )}
                 </Modal>
               </>

@@ -49,7 +49,7 @@ const Modal = styled(motion.div)`
 function TvShow() {
   const scroll = useRecoilValue(scrollYState);
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
-  const tvMatch = useMatch("/tvshow/tv/:tvId");
+  const tvMatch = useMatch("/tvshow/tv/:id");
   const onOverlayClick = () => {
     navigate("/tvshow");
   };
@@ -115,7 +115,7 @@ function TvShow() {
       </Wrapper>
       {/* TVshow Modal Section */}
       <AnimatePresence>
-        {tvMatch?.params.tvId ? (
+        {tvMatch?.params.id ? (
           <>
             <Overlay
               onClick={onOverlayClick}
@@ -124,11 +124,11 @@ function TvShow() {
             />
             <Modal
               style={{ top: scroll + 70 }}
-              layoutId={tvMatch.params.tvId}
+              layoutId={tvMatch.params.id}
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <TvDetailModal {...(tvMatch.params as { tvId: string })} />
+              <TvDetailModal {...(tvMatch.params as { id: string })} />
             </Modal>
           </>
         ) : null}

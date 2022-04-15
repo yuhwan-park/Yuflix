@@ -56,10 +56,10 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/tvshow" element={<TvShow />}>
-          <Route path="/tvshow/tv/:tvId" element={<TvShow />} />
+          <Route path="/tvshow/tv/:id" element={<TvShow />} />
         </Route>
         <Route path="/" element={<Home />}>
-          <Route path="/movie/:movieId" element={<Home />} />
+          <Route path="/movie/:id" element={<Home />} />
         </Route>
         <Route path="/search/:searchValue" element={<Search />}>
           <Route path="/search/:searchValue/tv/:id" element={<Search />} />
