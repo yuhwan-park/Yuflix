@@ -24,7 +24,7 @@ const Overlay = styled(motion.div)`
 `;
 const Modal = styled(motion.div)`
   position: absolute;
-  width: 50vw;
+  width: 60vw;
   height: 90vh;
   left: 0;
   right: 0;

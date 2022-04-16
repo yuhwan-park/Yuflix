@@ -22,13 +22,13 @@ const Svg = styled.svg`
   }
 `;
 const SvgWrapper = styled(motion.div)`
-  opacity: 0;
+  opacity: 1;
 `;
 function Loading({ width, height }: { width: string; height: string }) {
   return (
     <LoadingContainer width={width} height={height}>
       <SvgWrapper
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
         transition={{ repeat: Infinity, duration: 0.6, repeatType: "mirror" }}
       >
         <Svg
