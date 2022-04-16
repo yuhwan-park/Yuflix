@@ -121,10 +121,17 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
     }
   };
   useEffect(() => {
-    // 액세스 후 5초가 지나면 홈스크린을 player로 전환
+    let mounted = true;
+    // 메모리 누수 방지를 위해 컴포넌트가 사라졌을 때
+    // state를 업데이트 하지 않도록 하는 기능
     setTimeout(() => {
-      setTime(false);
+      if (mounted) {
+        setTime(false);
+      }
     }, 5000);
+    return () => {
+      mounted = false;
+    };
   }, []);
   useEffect(() => {
     // 다른 페이지로 이동시 player를 pause

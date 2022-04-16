@@ -221,11 +221,9 @@ function Slider({ results, title }: ISliderProps) {
           key={index}
         >
           {results
-            .slice(1)
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
               <BoxWrapper
-                layoutId={movie.id + ""}
                 onClick={() => onMovieClick(movie)}
                 variants={movieBoxVariants}
                 whileHover="hover"
@@ -266,7 +264,7 @@ function Slider({ results, title }: ISliderProps) {
           className="fa-solid fa-chevron-left"
         ></motion.i>
       </Arrow>
-      <Arrow onClick={increaseIndex} style={{ right: -25 }}>
+      <Arrow onClick={increaseIndex} style={{ right: 0 }}>
         <motion.i
           variants={arrowVariants}
           initial="init"

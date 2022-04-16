@@ -1,15 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
-import { useMatch, useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getSearch, IGetSearch, ISearchMovie, ISearchTvshow } from "../api";
-import { scrollYState } from "../atoms";
-import DetailModal from "../Components/DetailModal";
 import Loading from "../Components/Loading";
-import TvDetailModal from "../Components/TvDetailModal";
 import { genres, makeImage } from "../utils";
+import Modal from "../Components/Modal";
 
 const Wrapper = styled(motion.div)`
   position: relative;
@@ -60,38 +57,7 @@ const SearchTitle = styled.div`
   padding-bottom: 60px;
   font-weight: bold;
 `;
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-const Modal = styled(motion.div)`
-  position: absolute;
-  width: 50vw;
-  height: 90vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  background-color: rgba(20, 20, 20, 1);
-  box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 10px;
-    border-radius: 6px;
-    background: #908e8e;
-  }
-  &::-webkit-scrollbar-thumb {
-    height: 8px;
-    background: #393737;
-    border-radius: 6px;
-  }
-  @media (max-width: 800px) {
-    width: 100vw;
-  }
-`;
+
 const Release = styled.div`
   font-size: 10px;
 `;
@@ -145,9 +111,7 @@ const movieInfoVariants = {
   },
 };
 function Search() {
-  const scroll = useRecoilValue(scrollYState);
   const params = useParams<{ searchValue: string; id: string }>();
-  const movieIdMatch = useMatch("search/:searchValue/movie/:id");
   const navigate = useNavigate();
   const { data, isLoading, hasNextPage, fetchNextPage } =
     useInfiniteQuery<IGetSearch>(
@@ -170,9 +134,6 @@ function Search() {
     } else {
       navigate(`/search/${params.searchValue}/tv/${movie.id}`);
     }
-  };
-  const onOverlayClick = () => {
-    navigate(`/search/${params.searchValue}`);
   };
   useEffect(() => {
     // 다음페이지가 있으면 계속 불러오기 (total page까지)
@@ -236,29 +197,7 @@ function Search() {
               ))}
             </Row>
           </Wrapper>
-          <AnimatePresence>
-            {params.id ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                />
-                <Modal
-                  layoutId={params.id}
-                  style={{ top: scroll + 70 }}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  {movieIdMatch ? (
-                    <DetailModal id={params.id} />
-                  ) : (
-                    <TvDetailModal id={params.id} />
-                  )}
-                </Modal>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <AnimatePresence>{params.id ? <Modal /> : null}</AnimatePresence>
         </>
       )}
     </>
