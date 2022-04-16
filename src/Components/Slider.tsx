@@ -83,12 +83,12 @@ const SliderTitle = styled.h1`
   padding-left: 60px;
   font-size: 40px;
   font-weight: 700;
-  text-shadow: 1px 3px 10px rgb(0 0 0);
 `;
 const MovieInfo = styled(motion.div)`
   opacity: 0;
   padding: 10px;
   width: 100%;
+  height: 100px;
   background-color: #181818;
 `;
 const Title = styled.div`

@@ -47,8 +47,8 @@ const Modal = styled(motion.div)`
   }
 `;
 function TvShow() {
-  const scroll = useRecoilValue(scrollYState);
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
+  const scroll = useRecoilValue(scrollYState);
   const tvMatch = useMatch("/tvshow/tv/:id");
   const onOverlayClick = () => {
     navigate("/tvshow");

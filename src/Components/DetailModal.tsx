@@ -233,12 +233,19 @@ function DetailModal({ id }: { id: string }) {
     useQuery<IGetDatelessMovies>(["recommend", id], () =>
       getRecommendationMovies(id)
     );
-
   const isLoading = detailLoading || videoIsLoading || recommendIsLoading;
   useEffect(() => {
+    let mounted = true;
+    // 메모리 누수 방지를 위해 컴포넌트가 사라졌을 때
+    // state를 업데이트 하지 않도록 하는 기능
     setTimeout(() => {
-      setTime(false);
+      if (mounted) {
+        setTime(false);
+      }
     }, 5000);
+    return () => {
+      mounted = false;
+    };
   }, []);
   return (
     <>

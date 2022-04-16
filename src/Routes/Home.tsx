@@ -55,13 +55,16 @@ function Home() {
   const navigate = useNavigate(); // URL을 바꾸기 위한 hook
   const scroll = useRecoilValue(scrollYState);
   const movieMatch = useMatch("movie/:id");
+  const onOverlayClick = () => {
+    navigate("/");
+  };
   const { data: nowPlayingData, isLoading: nowPlayingIsLoading } =
     useQuery<IGetMovies>(["movie", "now_playing"], () =>
       getMovies("now_playing", 1)
     );
   const { data: popularData, isLoading: popularLoading } =
     useQuery<IGetDatelessMovies>(["movie", "popular"], () =>
-      getMovies("popular", 3)
+      getMovies("popular", 4)
     );
   const { data: upcomingData, isLoading: upcomingLoading } =
     useQuery<IGetMovies>(["movie", "upcoming"], () => getMovies("upcoming", 1));
@@ -77,9 +80,6 @@ function Home() {
     useQuery<IGetDatelessMovies>(["movie", "anime"], () =>
       getMovieWithGenre(16, 1)
     );
-  const onOverlayClick = () => {
-    navigate("/");
-  };
   const isLoading =
     nowPlayingIsLoading ||
     popularLoading ||

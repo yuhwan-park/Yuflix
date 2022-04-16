@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { getVideo, IGetVideo } from "../api";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useMatch, useNavigate } from "react-router-dom";
 const Container = styled.div`
   position: relative;
@@ -101,7 +101,6 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
   const [mute, setMute] = useState(true);
   const [time, setTime] = useState(true);
   const setSearch = useSetRecoilState(searchState);
-  const { scrollY } = useViewportScroll();
   const navigate = useNavigate();
   const match = useMatch("/");
   const tvMatch = useMatch("/tvshow");
@@ -128,24 +127,13 @@ function HomeScreen({ title, backdrop_path, id, format }: IHomeScreenProps) {
     }, 5000);
   }, []);
   useEffect(() => {
-    // 홈스크린이 반 이상 안보일 경우 player를 pause
-    scrollY.onChange(() => {
-      if (scrollY.get() > window.innerHeight * 0.5) {
-        setPause(false);
-      }
-      if (scrollY.get() < window.innerHeight * 0.5) {
-        setPause(true);
-      }
-    });
-  }, [scrollY]);
-  useEffect(() => {
-    if (!match) {
-      // 메인홈페이지에서 이동할 경우 player를 pause
-      setPause(false);
-    } else {
+    // 다른 페이지로 이동시 player를 pause
+    if (match || tvMatch) {
       setPause(true);
+    } else {
+      setPause(false);
     }
-  }, [match]);
+  }, [match, tvMatch]);
   return (
     <>
       {isLoading ? null : (
