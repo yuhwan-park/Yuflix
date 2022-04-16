@@ -92,6 +92,16 @@ export interface IGetSearch {
   total_pages: number;
   total_results: number;
 }
+interface IEpisode {
+  episode_number: number;
+  id: number;
+  name: string;
+  overview: string;
+  still_path: string;
+}
+export interface IGetTvEpisode {
+  episodes: IEpisode[];
+}
 export function getMovies(format: string, page: number) {
   return fetch(
     `${DEFAULT_URL}movie/${format}?api_key=${API_KEY}&language=ko-KR&page=${page}&region=KR`
@@ -132,5 +142,10 @@ export function getSearch(value: string, page?: number) {
     `${DEFAULT_URL}search/multi?api_key=${API_KEY}&language=ko-KR&query=${value}&page=${
       page ? page : 1
     }&region=KR`
+  ).then((res) => res.json());
+}
+export function getTvEpisode(id: string) {
+  return fetch(
+    `${DEFAULT_URL}tv/${id}/season/1?api_key=${API_KEY}&language=ko-KR`
   ).then((res) => res.json());
 }

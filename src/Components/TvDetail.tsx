@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getTvDetail, getVideo, IGetTvDetail, IGetVideo } from "../api";
-import { makeImage, makeVideoUrl } from "../utils";
+import {
+  getTvDetail,
+  getTvEpisode,
+  getVideo,
+  IGetTvDetail,
+  IGetTvEpisode,
+  IGetVideo,
+} from "../api";
+import { makeEpImage, makeImage, makeVideoUrl } from "../utils";
 import Loading from "./Loading";
 
 const Container = styled.div`
@@ -122,6 +129,100 @@ const DateAndTime = styled.div`
     padding-right: 10px;
   }
 `;
+const EpTitle = styled.h2`
+  padding: 30px 0 0 50px;
+  font-size: 24px;
+  font-weight: bold;
+`;
+const EpContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 30px 30px 30px;
+`;
+const EpWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  border-bottom: 1px solid #404040;
+  cursor: pointer;
+  .epNum {
+    width: 50px;
+    font-size: 30px;
+    color: #d2d2d2;
+  }
+  &:hover {
+    i {
+      opacity: 1;
+    }
+  }
+`;
+const EpImg = styled.div<{ epimg: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 100px;
+  background-image: url(${(props) => props.epimg});
+  background-size: cover;
+  background-position: center center;
+  border-radius: 6px;
+  overflow: hidden;
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border: 1px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: opacity 0.2s linear;
+  }
+`;
+const EpOverview = styled.div`
+  color: #d2d2d2;
+  font-size: 14px;
+  width: 80%;
+  padding: 10px;
+  padding-left: 20px;
+  line-height: 18px;
+  div {
+    font-size: 18px;
+    padding-bottom: 10px;
+    color: white;
+    font-weight: 700;
+  }
+`;
+const PageButton = styled.div`
+  height: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid #404040;
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+      border: 2px solid white;
+    }
+    &:active {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+`;
 const IconVariants = {
   hover: {
     backgroundColor: "rgba(255,255,255,0.3)",
@@ -132,6 +233,7 @@ function TvDetail({ id }: { id: string }) {
   const [time, setTime] = useState(true);
   const [mute, setMute] = useState(true);
   const [more, setMore] = useState(true);
+  const [page, setPage] = useState(true);
   const onRefreshClick = () => setTime(false);
   const onMuteClick = () => setMute((prev) => !prev);
   const onEnd = () => setTime(true);
@@ -146,7 +248,10 @@ function TvDetail({ id }: { id: string }) {
     ["video", id],
     () => getVideo(+id, "tv")
   );
-  const isLoading = detailLoading || videoIsLoading;
+  const { data: episodeData, isLoading: episodeIsLoading } =
+    useQuery<IGetTvEpisode>(["episode", id], () => getTvEpisode(id));
+  const isLoading = detailLoading || videoIsLoading || episodeIsLoading;
+  const onMoreClick = () => setPage((prev) => !prev);
   useEffect(() => {
     let mounted = true;
     // 메모리 누수 방지를 위해 컴포넌트가 사라졌을 때
@@ -236,6 +341,31 @@ function TvDetail({ id }: { id: string }) {
               </Meta>
             </Info>
           </Detail>
+          <EpTitle>회차</EpTitle>
+          <EpContainer>
+            {episodeData?.episodes.slice(0, page ? 10 : Infinity).map((ep) =>
+              ep.overview ? (
+                <EpWrapper key={ep.id}>
+                  <div className="epNum">{ep.episode_number}</div>
+                  <EpImg epimg={makeEpImage(ep.still_path)}>
+                    <i className="fa-solid fa-play"></i>
+                  </EpImg>
+                  <EpOverview>
+                    <div>{ep.episode_number}화</div>
+                    {ep.overview}
+                  </EpOverview>
+                </EpWrapper>
+              ) : null
+            )}
+            {episodeData && episodeData?.episodes.length > 10 ? (
+              <PageButton>
+                <i
+                  onClick={onMoreClick}
+                  className={`fa-solid fa-angle-${page ? "down" : "up"}`}
+                ></i>
+              </PageButton>
+            ) : null}
+          </EpContainer>
         </Container>
       )}
     </>

@@ -1,6 +1,9 @@
 export function makeImage(id: string, format?: string) {
   return `https://image.tmdb.org/t/p/${format ? format : "original"}/${id}`;
 }
+export function makeEpImage(path: string) {
+  return `https://image.tmdb.org/t/p/w200${path}`;
+}
 export function makeVideoUrl(id: string) {
   return `https://www.youtube.com/embed/${id}?showinfo=0&enablejsapi=1&vq=hd1080`;
 }
