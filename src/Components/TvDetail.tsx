@@ -85,7 +85,7 @@ const Detail = styled.div`
 `;
 const Info = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
 `;
 const Overview = styled.div<{ more: boolean }>`
   width: 50%;
@@ -113,6 +113,7 @@ const Meta = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding-left: 20px;
   width: 50%;
   span {
     padding: 10px 0;
@@ -341,11 +342,13 @@ function TvDetail({ id }: { id: string }) {
               </Meta>
             </Info>
           </Detail>
-          <EpTitle>회차</EpTitle>
+          <EpTitle>
+            {document.querySelectorAll(".episode").length > 0 ? "회차" : null}
+          </EpTitle>
           <EpContainer>
             {episodeData?.episodes.slice(0, page ? 10 : Infinity).map((ep) =>
               ep.overview ? (
-                <EpWrapper key={ep.id}>
+                <EpWrapper key={ep.id} className="episode">
                   <div className="epNum">{ep.episode_number}</div>
                   <EpImg epimg={makeEpImage(ep.still_path)}>
                     <i className="fa-solid fa-play"></i>
@@ -357,7 +360,7 @@ function TvDetail({ id }: { id: string }) {
                 </EpWrapper>
               ) : null
             )}
-            {episodeData && episodeData?.episodes.length > 10 ? (
+            {episodeData && document.querySelectorAll(".episode").length > 0 ? (
               <PageButton>
                 <i
                   onClick={onMoreClick}

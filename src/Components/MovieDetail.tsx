@@ -86,7 +86,7 @@ const Detail = styled.div`
 `;
 const Info = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
 `;
 const Overview = styled.div<{ more: boolean }>`
   width: 50%;
@@ -113,6 +113,7 @@ const Overview = styled.div<{ more: boolean }>`
 const Meta = styled.div`
   display: flex;
   align-items: center;
+  padding-left: 20px;
   flex-direction: column;
   width: 50%;
   span {
@@ -335,7 +336,9 @@ function MovieDetail({ id }: { id: string }) {
           <Row>
             {recommendData?.results.map((movie) => (
               <MovieCard key={movie.id} onClick={() => onCardClick(movie.id)}>
-                <BgImg bgimg={makeImage(movie.backdrop_path)}>
+                <BgImg
+                  bgimg={makeImage(movie.backdrop_path || movie.poster_path)}
+                >
                   <i className="fa-solid fa-play"></i>
                 </BgImg>
                 <CardInfo>
