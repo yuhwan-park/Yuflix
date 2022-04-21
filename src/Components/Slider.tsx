@@ -24,7 +24,7 @@ const Wrapper = styled(motion.div)`
       display: block;
     }
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     top: -60px;
     margin-bottom: 0px;
     height: 300px;
@@ -55,7 +55,7 @@ const MovieBox = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-position: center center;
   background-size: cover;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     height: 200px;
   }
 `;
@@ -76,7 +76,7 @@ const Arrow = styled(motion.div)`
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     height: 200px;
     i {
       font-size: 24px;
@@ -98,7 +98,7 @@ const SliderTitle = styled.h1`
   padding-left: 60px;
   font-size: 40px;
   font-weight: 700;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     font-size: 24px;
   }
 `;

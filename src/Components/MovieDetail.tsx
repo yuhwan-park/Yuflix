@@ -42,7 +42,7 @@ const Home = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     height: 30vh;
     min-height: 0;
   }
@@ -55,7 +55,7 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
   text-shadow: 1px 3px 10px rgb(0 0 0);
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     top: 150px;
     font-size: 14px;
   }
@@ -77,7 +77,7 @@ const IconWrapper = styled(motion.div)`
     color: white;
     font-size: 16px;
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     top: 150px;
     font-size: 14px;
     margin-right: 20px;
@@ -93,7 +93,7 @@ const PlayContainer = styled(motion.div)`
   justify-content: center;
   overflow: hidden;
   z-index: -1;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     height: 30vh;
     min-height: 0;
   }
@@ -110,7 +110,7 @@ const Overlay = styled.div`
     rgba(0, 0, 0, 0),
     rgba(20, 20, 20, 1)
   );
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     height: 30vh;
     min-height: 0;
   }
@@ -118,14 +118,14 @@ const Overlay = styled.div`
 const Detail = styled.div`
   position: relative;
   padding: 50px;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     padding: 20px;
   }
 `;
 const Info = styled.div`
   display: flex;
   justify-content: center;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     display: block;
   }
 `;
@@ -150,7 +150,7 @@ const Overview = styled.div<{ more: boolean }>`
       text-decoration: underline;
     }
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     width: 100%;
   }
 `;
@@ -167,7 +167,7 @@ const Meta = styled.div`
       color: darkgray;
     }
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     width: 100%;
   }
 `;
@@ -183,7 +183,7 @@ const Row = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   padding: 50px;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;

@@ -20,8 +20,8 @@ const Home = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
-  @media screen and (max-width: 400px) {
-    height: 40vh;
+  @media screen and (max-width: 600px) {
+    height: 50vh;
   }
 `;
 const PlayContainer = styled(motion.div)`
@@ -33,8 +33,8 @@ const PlayContainer = styled(motion.div)`
   justify-content: center;
   overflow: hidden;
   z-index: -1;
-  @media screen and (max-width: 400px) {
-    height: 40vh;
+  @media screen and (max-width: 600px) {
+    height: 50vh;
   }
 `;
 const Overlay = styled.div`
@@ -44,8 +44,8 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 20, 1));
-  @media screen and (max-width: 400px) {
-    height: 40vh;
+  @media screen and (max-width: 600px) {
+    height: 50vh;
   }
 `;
 const Wrapper = styled.div`
@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   left: 0;
   top: 50%;
   padding-left: 77px;
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     padding-left: 30px;
   }
 `;
@@ -63,7 +63,7 @@ const Title = styled.div`
   font-size: 68px;
   font-weight: 700;
   text-shadow: 1px 3px 10px rgb(0 0 0);
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     font-size: 20px;
   }
 `;
@@ -81,7 +81,7 @@ const DetailBtn = styled.button`
   &:hover {
     background-color: rgba(205, 209, 204, 0.1);
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     width: 100px;
     height: 40px;
     margin-top: 10px;
@@ -105,7 +105,7 @@ const IconWrapper = styled(motion.div)`
     color: white;
     font-size: 24px;
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 600px) {
     top: 20vh;
     width: 40px;
     height: 40px;

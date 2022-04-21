@@ -81,6 +81,7 @@ const Form = styled.form<{ search: boolean }>`
   }
   @media screen and (max-width: 650px) {
     position: absolute;
+    right: 20px;
   }
 `;
 
