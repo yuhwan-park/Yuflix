@@ -16,6 +16,9 @@ const NavBar = styled(motion.div)`
   align-items: center;
   padding: 0 60px;
   z-index: 99;
+  @media screen and (max-width: 400px) {
+    padding: 0 20px;
+  }
 `;
 const Logo = styled.svg`
   position: relative;
@@ -54,10 +57,11 @@ const Search = styled(motion.i)`
   font-size: 18px;
   padding: 15px 10px;
 `;
-const Form = styled.form`
+const Form = styled.form<{ search: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
+  z-index: ${(props) => (props.search ? 1 : -1)};
   input {
     color: white;
     padding: 5px 10px;
@@ -74,6 +78,9 @@ const Form = styled.form`
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
+  }
+  @media screen and (max-width: 650px) {
+    position: absolute;
   }
 `;
 
@@ -124,7 +131,7 @@ function Nav() {
           </Item>
         </Links>
       </Wrapper>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} search={search}>
         <motion.input
           {...register("search", { required: true, minLength: 2 })}
           type="text"

@@ -17,6 +17,20 @@ import Loading from "./Loading";
 
 const Container = styled.div`
   position: relative;
+  .exit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    background-color: #353437;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 `;
 const Home = styled(motion.div)<{ bgimg: string }>`
   width: 100%;
@@ -28,6 +42,10 @@ const Home = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
+  @media screen and (max-width: 400px) {
+    height: 30vh;
+    min-height: 0;
+  }
 `;
 const Title = styled.div`
   position: absolute;
@@ -37,6 +55,10 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
   text-shadow: 1px 3px 10px rgb(0 0 0);
+  @media screen and (max-width: 400px) {
+    top: 150px;
+    font-size: 14px;
+  }
 `;
 const IconWrapper = styled(motion.div)`
   position: absolute;
@@ -55,6 +77,11 @@ const IconWrapper = styled(motion.div)`
     color: white;
     font-size: 16px;
   }
+  @media screen and (max-width: 400px) {
+    top: 150px;
+    font-size: 14px;
+    margin-right: 20px;
+  }
 `;
 const PlayContainer = styled(motion.div)`
   min-width: 100%;
@@ -66,6 +93,10 @@ const PlayContainer = styled(motion.div)`
   justify-content: center;
   overflow: hidden;
   z-index: -1;
+  @media screen and (max-width: 400px) {
+    height: 30vh;
+    min-height: 0;
+  }
 `;
 const Overlay = styled.div`
   width: 100%;
@@ -79,14 +110,24 @@ const Overlay = styled.div`
     rgba(0, 0, 0, 0),
     rgba(20, 20, 20, 1)
   );
+  @media screen and (max-width: 400px) {
+    height: 30vh;
+    min-height: 0;
+  }
 `;
 const Detail = styled.div`
   position: relative;
   padding: 50px;
+  @media screen and (max-width: 400px) {
+    padding: 20px;
+  }
 `;
 const Info = styled.div`
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 400px) {
+    display: block;
+  }
 `;
 const Overview = styled.div<{ more: boolean }>`
   width: 50%;
@@ -109,6 +150,9 @@ const Overview = styled.div<{ more: boolean }>`
       text-decoration: underline;
     }
   }
+  @media screen and (max-width: 400px) {
+    width: 100%;
+  }
 `;
 const Meta = styled.div`
   display: flex;
@@ -123,6 +167,9 @@ const Meta = styled.div`
       color: darkgray;
     }
   }
+  @media screen and (max-width: 400px) {
+    width: 100%;
+  }
 `;
 const DateAndTime = styled.div`
   font-size: 14px;
@@ -136,6 +183,9 @@ const Row = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   padding: 50px;
+  @media screen and (max-width: 400px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 const MovieCard = styled.div`
   width: 100%;
@@ -222,6 +272,9 @@ function MovieDetail({ id }: { id: string }) {
   const onCardClick = (id: number) => {
     navigate(`movie/${id}`);
   };
+  const onExitClick = () => {
+    navigate("/");
+  };
   const { data, isLoading: detailLoading } = useQuery<IGetMovieDetail>(
     ["movie", id],
     () => getMovieDetail(id)
@@ -255,6 +308,7 @@ function MovieDetail({ id }: { id: string }) {
       ) : (
         <Container>
           <Overlay />
+          <i onClick={onExitClick} className="fa-solid fa-x exit"></i>
           {videoData?.results.length === 0 || time ? (
             <Home
               bgimg={makeImage(data?.backdrop_path || data?.poster_path || "")}

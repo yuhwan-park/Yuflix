@@ -24,6 +24,11 @@ const Wrapper = styled(motion.div)`
       display: block;
     }
   }
+  @media screen and (max-width: 400px) {
+    top: -60px;
+    margin-bottom: 0px;
+    height: 300px;
+  }
 `;
 const Row = styled(motion.div)`
   display: grid;
@@ -50,6 +55,9 @@ const MovieBox = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-position: center center;
   background-size: cover;
+  @media screen and (max-width: 400px) {
+    height: 200px;
+  }
 `;
 const Arrow = styled(motion.div)`
   height: 360px;
@@ -68,6 +76,13 @@ const Arrow = styled(motion.div)`
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
   }
+  @media screen and (max-width: 400px) {
+    height: 200px;
+    i {
+      font-size: 24px;
+      display: block;
+    }
+  }
 `;
 const BoxWrapper = styled(motion.div)`
   cursor: pointer;
@@ -83,6 +98,9 @@ const SliderTitle = styled.h1`
   padding-left: 60px;
   font-size: 40px;
   font-weight: 700;
+  @media screen and (max-width: 400px) {
+    font-size: 24px;
+  }
 `;
 const MovieInfo = styled(motion.div)`
   opacity: 0;
@@ -264,7 +282,7 @@ function Slider({ results, title }: ISliderProps) {
           className="fa-solid fa-chevron-left"
         ></motion.i>
       </Arrow>
-      <Arrow onClick={increaseIndex} style={{ right: 0 }}>
+      <Arrow onClick={increaseIndex} style={{ right: -25 }}>
         <motion.i
           variants={arrowVariants}
           initial="init"
